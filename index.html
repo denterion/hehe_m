@@ -13,6 +13,8 @@
             height: 100vh;
             background-color: #f0f0f0;
             flex-direction: column;
+            margin: 0;
+            overflow: hidden;
         }
 
         .start-screen {
@@ -22,11 +24,13 @@
             justify-content: center;
             width: 100%;
             height: 100vh;
-            background: url('templates/gbn.jpg') no-repeat center center/cover;
+            background: url('templates/gbn.jpg') no-repeat center center;
+            background-size: cover;
             color: #d4af37;
             font-family: 'Old English Text MT', 'Gothic', serif;
             text-shadow: 3px 3px 5px black;
             text-align: center;
+            position: relative;
         }
 
         .container,
@@ -60,7 +64,6 @@
             color: white;
             font-size: 20px;
             font-weight: bold;
-            background: url('templates/gbnn.jpg') no-repeat center center/cover;
         }
 
         .image-name {
@@ -157,13 +160,25 @@
             border-color: black;
             text-shadow: 2px 2px 4px black;
         }
+
+        .explosion {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: url('templates/explosion.gif') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
     </style>
 </head>
 
 <body>
     <div class="start-screen" id="startScreen">
         <h1>Добро пожаловать!</h1>
-        <button class="button blue" onclick="startGame()">Начать</button>
+        <button class="button blue" onclick="triggerExplosion(event)">Начать</button>
+        <div class="explosion" id="explosion"></div>
     </div>
     <div class="container" id="mainContainer">
         <div>
@@ -202,17 +217,33 @@
             { src: 'templates/egor_z.jpg', name: 'Егор Загадаев', info: 'tg: @godge28' },
             { src: 'templates/kosta.jpg', name: 'Константин Сивенков', info: 'tg: @cityunderthessole' },
             { src: 'templates/nikita.jpg', name: 'Никита Гурьянов', info: 'tg: @mimim_812' },
-            { src: 'templates/victor.jpg', name: 'Виктор Гоноченко', info: 'tg: @Gloslt' }
+            { src: 'templates/victor.jpg', name: 'Виктор Гоноченко', info: 'tg: @Gloslt' },
+            { src: 'templates/sasha.jpg', name: 'Алесандр Марочкин', info: 'tg: @le_witt' },
+            { src: 'templates/victor_ras.jpg', name: 'Виктор Растатуров', info: 'tg: @Rastoru' },
+            { src: 'templates/timur.jpg', name: 'Тимур Лобанов', info: 'tg: +7 938 341 3276' },
+            { src: 'templates/artem.jpg', name: 'Артем Титов', info: 'tg: @Perdoonstariy' },
+            { src: 'templates/misha.jpg', name: 'Михаил', info: 'tg: @nevarick' },
         ];
 
         let remainingImages = [...catImages];
+
+        function triggerExplosion(event) {
+            const explosion = document.getElementById("explosion");
+            explosion.style.left = `${event.clientX - 100}px`;
+            explosion.style.top = `${event.clientY - 100}px`;
+            explosion.style.opacity = "1";
+
+            setTimeout(() => {
+                explosion.style.opacity = "0";
+                setTimeout(startGame, 300);
+            }, 700);
+        }
 
         function startGame() {
             document.getElementById("startScreen").style.display = "none";
             document.getElementById("mainContainer").style.display = "flex";
 
-            // Устанавливаем начальные изображения
-            setRandomImage("leftBox", "leftImageName");
+            setRandomImage("leftBox", "leftImageName"); ''
             setRandomImage("rightBox", "rightImageName");
         }
 
