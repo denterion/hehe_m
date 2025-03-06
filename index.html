@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Зло</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            flex-direction: column;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .start-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            background: url('templates/gbn.jpg') no-repeat center center;
+            background-size: cover;
+            color: #d4af37;
+            font-family: 'Old English Text MT', 'Gothic', serif;
+            text-shadow: 3px 3px 5px black;
+            text-align: center;
+            position: relative;
+        }
+
+        .container {
+            display: none;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a1a, #3a3a3a);
+            color: #d4af37;
+            font-family: 'Old English Text MT', 'Gothic', serif;
+            padding: 20px;
+            border: 3px solid #8b0000;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.8);
+            text-align: center;
+            max-width: 600px;
+
+        }
+
+
+        .final-message {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a1a, #3a3a3a);
+            color: #d4af37;
+            /* Золотистый текст */
+            font-family: 'Old English Text MT', 'Gothic', serif;
+            padding: 20px;
+            border: 3px solid #8b0000;
+            /* Темно-красная рамка */
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.8);
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .box {
+            width: 200px;
+            height: 300px;
+            background-color: black;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .image-name {
+            text-align: center;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .button {
+            display: block;
+            padding: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .blue {
+            background-color: deepskyblue;
+        }
+
+        .pink {
+            background-color: magenta;
+        }
+
+        .final-message {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+        }
+
+        .final-message h2 {
+            font-size: 28px;
+            text-shadow: 3px 3px 5px black;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+        }
+
+        .final-message p {
+            font-size: 20px;
+            margin-top: 10px;
+            text-shadow: 2px 2px 4px black;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+        }
+
+        #finalBox {
+            width: 220px;
+            height: 320px;
+            border: 5px solid #8b0000;
+            border-radius: 10px;
+            margin-top: 15px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+        }
+
+        .button.blue {
+            background-color: #8b0000;
+            color: #fff;
+            font-family: 'Old English Text MT', 'Gothic', serif;
+            border: 2px solid #d4af37;
+            padding: 12px 20px;
+            font-size: 18px;
+            text-shadow: 2px 2px 3px black;
+            transition: 0.3s;
+        }
+
+        .button.blue:hover {
+            background-color: #d4af37;
+            color: #8b0000;
+            border-color: black;
+            text-shadow: 2px 2px 4px black;
+        }
+
+        .button.pink {
+            background-color: #8b0000;
+            color: #fff;
+            font-family: 'Old English Text MT', 'Gothic', serif;
+            border: 2px solid #d4af37;
+            padding: 12px 20px;
+            font-size: 18px;
+            text-shadow: 2px 2px 3px black;
+            transition: 0.3s;
+        }
+
+        .button.pink:hover {
+            background-color: #d4af37;
+            color: #8b0000;
+            border-color: black;
+            text-shadow: 2px 2px 4px black;
+        }
+
+        .explosion {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: url('templates/explosion.gif') no-repeat center center;
+            background-size: contain;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                height: auto;
+            }
+
+            .box {
+                width: 90%;
+                height: 200px;
+            }
+
+            .button {
+                width: 80px;
+                font-size: 12px;
+                padding: 10px;
+            }
+        }
+
+        .left-con {
+            margin: 0 20px 0 0;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="start-screen" id="startScreen">
+        <h1>Добро пожаловать!</h1>
+        <button class="button blue" onclick="triggerExplosion(event)">Начать</button>
+        <div class="explosion" id="explosion"></div>
+    </div>
+    <div class="container" id="mainContainer">
+        <div class="left-con">
+            <div id="leftBox" class="box"></div>
+            <div id="leftImageName" class="image-name">Чёрный</div>
+            <div class="controls">
+                <button class="button blue"
+                    onclick="changeImage('rightBox', 'rightImageName', 'leftBox')">Левый</button>
+            </div>
+        </div>
+        <div>
+            <div id="rightBox" class="box"></div>
+            <div id="rightImageName" class="image-name">Чёрный</div>
+            <div class="controls">
+                <button class="button pink"
+                    onclick="changeImage('leftBox', 'leftImageName', 'rightBox')">Правый</button>
+            </div>
+        </div>
+    </div>
+    <div id="finalMessage" class="final-message">
+        Ваш выбор
+        <div class="box" id="finalBox" style="margin: 10px auto;"></div>
+        <div id="finalImageName">Имя фотографии</div>
+        <p id="finalInfo">Контактные данные для связи: @about</p>
+        <button class="button blue" onclick="restartGame()">Вернуться к началу</button>
+    </div>
+    <script>
+        let catImages = [
+            { src: 'templates/maxim.jpg', name: 'Максим Гошкодер', info: 'tg: @Grisha_33' },
+            { src: 'templates/leha.jpg', name: 'Алексей Кондратенко', info: 'tg: @LODOJKA' },
+            { src: 'templates/andrew.jpg', name: 'Андрей Проценко', info: 'tg: @project_the_debacle' },
+            { src: 'templates/dima.jpg', name: 'Дмитрий Моисеенко', info: 'tg: @azazel_3109' },
+            { src: 'templates/dima_SH.jpg', name: 'Дмитрий Шефченко', info: 'tg: @gumacukk' },
+            { src: 'templates/vlad.jpg', name: 'Влад Лутков', info: 'tg: @Doprrrt' },
+            { src: 'templates/egor_SH.jpg', name: 'Егор Шаров', info: 'tg: @Sharysa0' },
+            { src: 'templates/egor_z.jpg', name: 'Егор Загадаев', info: 'tg: @godge28' },
+            { src: 'templates/kosta.jpg', name: 'Константин Сивенков', info: 'tg: @cityunderthessole' },
+            { src: 'templates/nikita.jpg', name: 'Никита Гурьянов', info: 'tg: @mimim_812' },
+            { src: 'templates/victor.jpg', name: 'Виктор Гоноченко', info: 'tg: @Gloslt' },
+            { src: 'templates/sasha.jpg', name: 'Алесандр Марочкин', info: 'tg: @le_witt' },
+            { src: 'templates/victor_ras.jpg', name: 'Виктор Растатуров', info: 'tg: @Rastoru' },
+            { src: 'templates/timur.jpg', name: 'Тимур Лобанов', info: 'tg: +7 938 341 3276' },
+            { src: 'templates/artem.jpg', name: 'Артем Титов', info: 'tg: @Perdoonstariy' },
+            { src: 'templates/misha.jpg', name: 'Михаил', info: 'tg: @nevarick' },
+        ];
+
+        let remainingImages = [...catImages];
+
+        function triggerExplosion(event) {
+            const explosion = document.getElementById("explosion");
+            explosion.style.left = `${event.clientX - 100}px`;
+            explosion.style.top = `${event.clientY - 100}px`;
+            explosion.style.opacity = "1";
+
+            setTimeout(() => {
+                explosion.style.opacity = "0";
+                setTimeout(startGame, 300);
+            }, 700);
+        }
+
+        function startGame() {
+            document.getElementById("startScreen").style.display = "none";
+            document.getElementById("mainContainer").style.display = "flex";
+
+            setRandomImage("leftBox", "leftImageName"); ''
+            setRandomImage("rightBox", "rightImageName");
+        }
+
+        function setRandomImage(boxId, labelId) {
+            if (remainingImages.length === 0) return;
+
+            const box = document.getElementById(boxId);
+            const label = document.getElementById(labelId);
+
+            // Выбираем случайное изображение
+            const randomIndex = Math.floor(Math.random() * remainingImages.length);
+            const selectedCat = remainingImages.splice(randomIndex, 1)[0];
+
+            box.style.backgroundImage = `url(${selectedCat.src})`;
+            box.style.backgroundSize = "cover";
+            box.style.backgroundPosition = "center";
+            label.textContent = selectedCat.name;
+
+            // Сохраняем данные в data-атрибут
+            box.dataset.image = selectedCat.src;
+            box.dataset.name = selectedCat.name;
+            box.dataset.info = selectedCat.info;
+        }
+
+        function changeImage(targetBoxId, targetLabelId, otherBoxId) {
+            if (remainingImages.length === 0) {
+                showFinalScreen(otherBoxId);
+                return;
+            }
+
+            setRandomImage(targetBoxId, targetLabelId);
+        }
+
+        function showFinalScreen(winningBoxId) {
+            const finalBox = document.getElementById("finalBox");
+            const finalImageName = document.getElementById("finalImageName");
+            const finalInfo = document.getElementById("finalInfo");
+
+            const winningBox = document.getElementById(winningBoxId);
+
+            document.getElementById("mainContainer").style.display = "none";
+            document.getElementById("finalMessage").style.display = "flex";
+
+            finalBox.style.backgroundImage = winningBox.style.backgroundImage;
+            finalBox.style.backgroundSize = "cover";
+            finalBox.style.backgroundPosition = "center";
+            finalImageName.textContent = winningBox.dataset.name;
+            finalInfo.textContent = `Контактные данные для связи: ${winningBox.dataset.info} `;
+        }
+
+        function restartGame() {
+            document.getElementById("finalMessage").style.display = "none";
+            document.getElementById("startScreen").style.display = "flex";
+            remainingImages = [...catImages];
+
+            document.getElementById("leftBox").style.backgroundImage = "";
+            document.getElementById("rightBox").style.backgroundImage = "";
+        }
+
+    </script>
+</body>
+
+</html>
